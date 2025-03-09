@@ -1,0 +1,1828 @@
+<ul>
+<li><a href="#pandas">Pandas</a>
+<ul>
+<li><a href="#installing-pandas">Installing Pandas</a></li>
+<li><a href="#importing-pandas">Importing Pandas</a></li>
+<li><a href="#creating-pandas-series-with-default-index">Creating Pandas
+Series with Default Index</a></li>
+<li><a href="#creating--pandas-series-with-custom-index">Creating Pandas
+Series with custom index</a></li>
+<li><a href="#creating-pandas-series-from-a-dictionary">Creating Pandas
+Series from a Dictionary</a></li>
+<li><a href="#creating-a-constant-pandas-series">Creating a Constant
+Pandas Series</a></li>
+<li><a href="#creating-a--pandas-series-using-linspace">Creating a
+Pandas Series Using Linspace</a></li>
+</ul></li>
+<li><a href="#dataframes">DataFrames</a>
+<ul>
+<li><a href="#creating-dataframes-from-list-of-lists">Creating
+DataFrames from List of Lists</a></li>
+<li><a href="#creating-dataframe-using-dictionary">Creating DataFrame
+Using Dictionary</a></li>
+<li><a href="#creating-dataframes-from-a-list-of-dictionaries">Creating
+DataFrames from a List of Dictionaries</a></li>
+</ul></li>
+<li><a href="#reading-csv-file-using-pandas">Reading CSV File Using
+Pandas</a>
+<ul>
+<li><a href="#data-exploration">Data Exploration</a></li>
+</ul></li>
+<li><a href="#modifying-a-dataframe">Modifying a DataFrame</a>
+<ul>
+<li><a href="#creating-a-dataframe">Creating a DataFrame</a></li>
+<li><a href="#adding-a-new-column">Adding a New Column</a></li>
+<li><a href="#modifying-column-values">Modifying column values</a></li>
+<li><a href="#formating-dataframe-columns">Formating DataFrame
+columns</a></li>
+</ul></li>
+<li><a href="#checking-data-types-of-column-values">Checking data types
+of Column values</a>
+<ul>
+<li><a href="#boolean-indexing">Boolean Indexing</a></li>
+</ul></li>
+<li><a href="#exercises-day-25">Exercises: Day 25</a></li>
+</ul>
+<h1 id="day-25">📘 Day 25</h1>
+<h2 id="pandas">Pandas</h2>
+<p>Pandas is an open source, high-performance, easy-to-use data
+structures and data analysis tools for the Python programming language.
+Pandas adds data structures and tools designed to work with table-like
+data which is <em>Series</em> and <em>Data Frames</em>. Pandas provides
+tools for data manipulation:</p>
+<ul>
+<li>reshaping</li>
+<li>merging</li>
+<li>sorting</li>
+<li>slicing</li>
+<li>aggregation</li>
+<li>imputation. If you are using anaconda, you do not have install
+pandas.</li>
+</ul>
+<h3 id="installing-pandas">Installing Pandas</h3>
+<p>For Mac:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pip install conda</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>conda install pandas</span></code></pre></div>
+<p>For Windows:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pip install conda</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>pip install pandas</span></code></pre></div>
+<p>Pandas data structure is based on <em>Series</em> and
+<em>DataFrames</em>.</p>
+<p>A <em>series</em> is a <em>column</em> and a DataFrame is a
+<em>multidimensional table</em> made up of collection of
+<em>series</em>. In order to create a pandas series we should use numpy
+to create a one dimensional arrays or a python list. Let us see an
+example of a series:</p>
+<p>Names Pandas Series</p>
+<figure>
+<img src="../images/pandas-series-1.png" alt="pandas series" />
+<figcaption aria-hidden="true">pandas series</figcaption>
+</figure>
+<p>Countries Series</p>
+<figure>
+<img src="../images/pandas-series-2.png" alt="pandas series" />
+<figcaption aria-hidden="true">pandas series</figcaption>
+</figure>
+<p>Cities Series</p>
+<figure>
+<img src="../images/pandas-series-3.png" alt="pandas series" />
+<figcaption aria-hidden="true">pandas series</figcaption>
+</figure>
+<p>As you can see, pandas series is just one column of data. If we want
+to have multiple columns we use data frames. The example below shows
+pandas DataFrames.</p>
+<p>Let us see, an example of a pandas data frame:</p>
+<figure>
+<img src="../images/pandas-dataframe-1.png" alt="Pandas data frame" />
+<figcaption aria-hidden="true">Pandas data frame</figcaption>
+</figure>
+<p>Data frame is a collection of rows and columns. Look at the table
+below; it has many more columns than the example above:</p>
+<figure>
+<img src="../images/pandas-dataframe-2.png" alt="Pandas data frame" />
+<figcaption aria-hidden="true">Pandas data frame</figcaption>
+</figure>
+<p>Next, we will see how to import pandas and how to create Series and
+DataFrames using pandas</p>
+<h3 id="importing-pandas">Importing Pandas</h3>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd <span class="co"># importing pandas as pd</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy  <span class="im">as</span> np <span class="co"># importing numpy as np</span></span></code></pre></div>
+<h3 id="creating-pandas-series-with-default-index">Creating Pandas
+Series with Default Index</h3>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>nums <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>,<span class="dv">5</span>]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> pd.Series(nums)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">0</span>    1</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">1</span>    2</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">2</span>    3</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">3</span>    4</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">4</span>    5</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">dtype:</span> int64</span></code></pre></div>
+<h3 id="creating-pandas-series-with-custom-index">Creating Pandas Series
+with custom index</h3>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>nums <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>]</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> pd.Series(nums, index<span class="op">=</span>[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>])</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">1</span>    1</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">2</span>    2</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">3</span>    3</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">4</span>    4</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">5</span>    5</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">dtype:</span> int64</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fruits <span class="op">=</span> [<span class="st">&#39;Orange&#39;</span>,<span class="st">&#39;Banana&#39;</span>,<span class="st">&#39;Mango&#39;</span>]</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>fruits <span class="op">=</span> pd.Series(fruits, index<span class="op">=</span>[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>])</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(fruits)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">1</span>    Orange</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">2</span>    Banana</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">3</span>    Mango</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">dtype:</span> object</span></code></pre></div>
+<h3 id="creating-pandas-series-from-a-dictionary">Creating Pandas Series
+from a Dictionary</h3>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>dct <span class="op">=</span> {<span class="st">&#39;name&#39;</span>:<span class="st">&#39;Asabeneh&#39;</span>,<span class="st">&#39;country&#39;</span>:<span class="st">&#39;Finland&#39;</span>,<span class="st">&#39;city&#39;</span>:<span class="st">&#39;Helsinki&#39;</span>}</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> pd.Series(dct)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">name</span>       Asabeneh</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">country</span>     Finland</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">city</span>       Helsinki</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">dtype:</span> object</span></code></pre></div>
+<h3 id="creating-a-constant-pandas-series">Creating a Constant Pandas
+Series</h3>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> pd.Series(<span class="dv">10</span>, index <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>])</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">1</span>    10</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">2</span>    10</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">3</span>    10</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">dtype:</span> int64</span></code></pre></div>
+<h3 id="creating-a-pandas-series-using-linspace">Creating a Pandas
+Series Using Linspace</h3>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> pd.Series(np.linspace(<span class="dv">5</span>, <span class="dv">20</span>, <span class="dv">10</span>)) <span class="co"># linspace(starting, end, items)</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">0</span>     5.000000</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">1</span>     6.666667</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">2</span>     8.333333</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">3</span>    10.000000</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">4</span>    11.666667</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">5</span>    13.333333</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="ex">6</span>    15.000000</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="ex">7</span>    16.666667</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">8</span>    18.333333</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="ex">9</span>    20.000000</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="ex">dtype:</span> float64</span></code></pre></div>
+<h2 id="dataframes">DataFrames</h2>
+<p>Pandas data frames can be created in different ways.</p>
+<h3 id="creating-dataframes-from-list-of-lists">Creating DataFrames from
+List of Lists</h3>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> [</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&#39;Asabeneh&#39;</span>, <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;Helsink&#39;</span>], </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&#39;David&#39;</span>, <span class="st">&#39;UK&#39;</span>, <span class="st">&#39;London&#39;</span>],</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&#39;John&#39;</span>, <span class="st">&#39;Sweden&#39;</span>, <span class="st">&#39;Stockholm&#39;</span>]</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(data, columns<span class="op">=</span>[<span class="st">&#39;Names&#39;</span>,<span class="st">&#39;Country&#39;</span>,<span class="st">&#39;City&#39;</span>])</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code></pre></div>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Names
+</th>
+<th>
+Country
+</th>
+<th>
+City
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+Asabeneh
+</td>
+<td>
+Finland
+</td>
+<td>
+Helsink
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+David
+</td>
+<td>
+UK
+</td>
+<td>
+London
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+John
+</td>
+<td>
+Sweden
+</td>
+<td>
+Stockholm
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="creating-dataframe-using-dictionary">Creating DataFrame Using
+Dictionary</h3>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> {<span class="st">&#39;Name&#39;</span>: [<span class="st">&#39;Asabeneh&#39;</span>, <span class="st">&#39;David&#39;</span>, <span class="st">&#39;John&#39;</span>], <span class="st">&#39;Country&#39;</span>:[</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;UK&#39;</span>, <span class="st">&#39;Sweden&#39;</span>], <span class="st">&#39;City&#39;</span>: [<span class="st">&#39;Helsiki&#39;</span>, <span class="st">&#39;London&#39;</span>, <span class="st">&#39;Stockholm&#39;</span>]}</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(data)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code></pre></div>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Name
+</th>
+<th>
+Country
+</th>
+<th>
+City
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+Asabeneh
+</td>
+<td>
+Finland
+</td>
+<td>
+Helsiki
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+David
+</td>
+<td>
+UK
+</td>
+<td>
+London
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+John
+</td>
+<td>
+Sweden
+</td>
+<td>
+Stockholm
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="creating-dataframes-from-a-list-of-dictionaries">Creating
+DataFrames from a List of Dictionaries</h3>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> [</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    {<span class="st">&#39;Name&#39;</span>: <span class="st">&#39;Asabeneh&#39;</span>, <span class="st">&#39;Country&#39;</span>: <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;City&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>},</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    {<span class="st">&#39;Name&#39;</span>: <span class="st">&#39;David&#39;</span>, <span class="st">&#39;Country&#39;</span>: <span class="st">&#39;UK&#39;</span>, <span class="st">&#39;City&#39;</span>: <span class="st">&#39;London&#39;</span>},</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    {<span class="st">&#39;Name&#39;</span>: <span class="st">&#39;John&#39;</span>, <span class="st">&#39;Country&#39;</span>: <span class="st">&#39;Sweden&#39;</span>, <span class="st">&#39;City&#39;</span>: <span class="st">&#39;Stockholm&#39;</span>}]</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(data)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code></pre></div>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Name
+</th>
+<th>
+Country
+</th>
+<th>
+City
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+Asabeneh
+</td>
+<td>
+Finland
+</td>
+<td>
+Helsinki
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+David
+</td>
+<td>
+UK
+</td>
+<td>
+London
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+John
+</td>
+<td>
+Sweden
+</td>
+<td>
+Stockholm
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="reading-csv-file-using-pandas">Reading CSV File Using
+Pandas</h2>
+<p>To download the CSV file, what is needed in this example,
+console/command line is enough:</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-O</span> https://raw.githubusercontent.com/Asabeneh/30-Days-Of-Python/master/data/weight-height.csv</span></code></pre></div>
+<p>Put the downloaded file in your working directory.</p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">&#39;weight-height.csv&#39;</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code></pre></div>
+<h3 id="data-exploration">Data Exploration</h3>
+<p>Let us read only the first 5 rows using head()</p>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.head()) <span class="co"># give five rows we can increase the number of rows by passing argument to the head() method</span></span></code></pre></div>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Gender
+</th>
+<th>
+Height
+</th>
+<th>
+Weight
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+Male
+</td>
+<td>
+73.847017
+</td>
+<td>
+241.893563
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+Male
+</td>
+<td>
+68.781904
+</td>
+<td>
+162.310473
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+Male
+</td>
+<td>
+74.110105
+</td>
+<td>
+212.740856
+</td>
+</tr>
+<tr>
+<td>
+3
+</td>
+<td>
+Male
+</td>
+<td>
+71.730978
+</td>
+<td>
+220.042470
+</td>
+</tr>
+<tr>
+<td>
+4
+</td>
+<td>
+Male
+</td>
+<td>
+69.881796
+</td>
+<td>
+206.349801
+</td>
+</tr>
+</tbody>
+</table>
+<p>Let us also explore the last recordings of the dataframe using the
+tail() methods.</p>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.tail()) <span class="co"># tails give the last five rows, we can increase the rows by passing argument to tail method</span></span></code></pre></div>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Gender
+</th>
+<th>
+Height
+</th>
+<th>
+Weight
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+9995
+</td>
+<td>
+Female
+</td>
+<td>
+66.172652
+</td>
+<td>
+136.777454
+</td>
+</tr>
+<tr>
+<td>
+9996
+</td>
+<td>
+Female
+</td>
+<td>
+67.067155
+</td>
+<td>
+170.867906
+</td>
+</tr>
+<tr>
+<td>
+9997
+</td>
+<td>
+Female
+</td>
+<td>
+63.867992
+</td>
+<td>
+128.475319
+</td>
+</tr>
+<tr>
+<td>
+9998
+</td>
+<td>
+Female
+</td>
+<td>
+69.034243
+</td>
+<td>
+163.852461
+</td>
+</tr>
+<tr>
+<td>
+9999
+</td>
+<td>
+Female
+</td>
+<td>
+61.944246
+</td>
+<td>
+113.649103
+</td>
+</tr>
+</tbody>
+</table>
+<p>As you can see the csv file has three rows: Gender, Height and
+Weight. If the DataFrame would have a long rows, it would be hard to
+know all the columns. Therefore, we should use a method to know the
+colums. we do not know the number of rows. Let’s use shape meathod.</p>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape) <span class="co"># as you can see 10000 rows and three columns</span></span></code></pre></div>
+<pre><code>(10000, 3)</code></pre>
+<p>Let us get all the columns using columns.</p>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.columns)</span></code></pre></div>
+<pre><code>Index([&#39;Gender&#39;, &#39;Height&#39;, &#39;Weight&#39;], dtype=&#39;object&#39;)</code></pre>
+<p>Now, let us get a specific column using the column key</p>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>heights <span class="op">=</span> df[<span class="st">&#39;Height&#39;</span>] <span class="co"># this is now a series</span></span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(heights)</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">0</span>       73.847017</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">1</span>       68.781904</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">2</span>       74.110105</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">3</span>       71.730978</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">4</span>       69.881796</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>              <span class="ex">...</span>    </span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    <span class="ex">9995</span>    66.172652</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="ex">9996</span>    67.067155</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">9997</span>    63.867992</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    <span class="ex">9998</span>    69.034243</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    <span class="ex">9999</span>    61.944246</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Name:</span> Height, Length: 10000, dtype: float64</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> df[<span class="st">&#39;Weight&#39;</span>] <span class="co"># this is now a series</span></span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(weights)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">0</span>       241.893563</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">1</span>       162.310473</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">2</span>       212.740856</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">3</span>       220.042470</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">4</span>       206.349801</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>               <span class="ex">...</span>    </span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    <span class="ex">9995</span>    136.777454</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>    <span class="ex">9996</span>    170.867906</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">9997</span>    128.475319</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    <span class="ex">9998</span>    163.852461</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    <span class="ex">9999</span>    113.649103</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Name:</span> Weight, Length: 10000, dtype: float64</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(heights) <span class="op">==</span> <span class="bu">len</span>(weights))</span></code></pre></div>
+<pre><code>True</code></pre>
+<p>The describe() method provides a descriptive statistical values of a
+dataset.</p>
+<div class="sourceCode" id="cb36"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(heights.describe()) <span class="co"># give statisical information about height data</span></span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">count</span>    10000.000000</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">mean</span>        66.367560</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">std</span>          3.847528</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">min</span>         54.263133</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">25%</span>         63.505620</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">50%</span>         66.318070</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>    <span class="ex">75%</span>         69.174262</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>    <span class="ex">max</span>         78.998742</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Name:</span> Height, dtype: float64</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(weights.describe())</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">count</span>    10000.000000</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">mean</span>       161.440357</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">std</span>         32.108439</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">min</span>         64.700127</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">25%</span>        135.818051</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">50%</span>        161.212928</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>    <span class="ex">75%</span>        187.169525</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>    <span class="ex">max</span>        269.989699</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Name:</span> Weight, dtype: float64</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.describe())  <span class="co"># describe can also give statistical information from a dataFrame</span></span></code></pre></div>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Height
+</th>
+<th>
+Weight
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+count
+</td>
+<td>
+10000.000000
+</td>
+<td>
+10000.000000
+</td>
+</tr>
+<tr>
+<td>
+mean
+</td>
+<td>
+66.367560
+</td>
+<td>
+161.440357
+</td>
+</tr>
+<tr>
+<td>
+std
+</td>
+<td>
+3.847528
+</td>
+<td>
+32.108439
+</td>
+</tr>
+<tr>
+<td>
+min
+</td>
+<td>
+54.263133
+</td>
+<td>
+64.700127
+</td>
+</tr>
+<tr>
+<td>
+25%
+</td>
+<td>
+63.505620
+</td>
+<td>
+135.818051
+</td>
+</tr>
+<tr>
+<td>
+50%
+</td>
+<td>
+66.318070
+</td>
+<td>
+161.212928
+</td>
+</tr>
+<tr>
+<td>
+75%
+</td>
+<td>
+69.174262
+</td>
+<td>
+187.169525
+</td>
+</tr>
+<tr>
+<td>
+max
+</td>
+<td>
+78.998742
+</td>
+<td>
+269.989699
+</td>
+</tr>
+</tbody>
+</table>
+<p>Similar to describe(), the info() method also give information about
+the dataset.</p>
+<h2 id="modifying-a-dataframe">Modifying a DataFrame</h2>
+<p>Modifying a DataFrame: * We can create a new DataFrame * We can
+create a new column and add it to the DataFrame, * we can remove an
+existing column from a DataFrame, * we can modify an existing column in
+a DataFrame, * we can change the data type of column values in the
+DataFrame</p>
+<h3 id="creating-a-dataframe">Creating a DataFrame</h3>
+<p>As always, first we import the necessary packages. Now, lets import
+pandas and numpy, two best friends ever.</p>
+<div class="sourceCode" id="cb41"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> [</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    {<span class="st">&quot;Name&quot;</span>: <span class="st">&quot;Asabeneh&quot;</span>, <span class="st">&quot;Country&quot;</span>:<span class="st">&quot;Finland&quot;</span>,<span class="st">&quot;City&quot;</span>:<span class="st">&quot;Helsinki&quot;</span>},</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    {<span class="st">&quot;Name&quot;</span>: <span class="st">&quot;David&quot;</span>, <span class="st">&quot;Country&quot;</span>:<span class="st">&quot;UK&quot;</span>,<span class="st">&quot;City&quot;</span>:<span class="st">&quot;London&quot;</span>},</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    {<span class="st">&quot;Name&quot;</span>: <span class="st">&quot;John&quot;</span>, <span class="st">&quot;Country&quot;</span>:<span class="st">&quot;Sweden&quot;</span>,<span class="st">&quot;City&quot;</span>:<span class="st">&quot;Stockholm&quot;</span>}]</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(data)</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code></pre></div>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Name
+</th>
+<th>
+Country
+</th>
+<th>
+City
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+Asabeneh
+</td>
+<td>
+Finland
+</td>
+<td>
+Helsinki
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+David
+</td>
+<td>
+UK
+</td>
+<td>
+London
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+John
+</td>
+<td>
+Sweden
+</td>
+<td>
+Stockholm
+</td>
+</tr>
+</tbody>
+</table>
+<p>Adding a column to a DataFrame is like adding a key to a
+dictionary.</p>
+<p>First let’s use the previous example to create a DataFrame. After we
+create the DataFrame, we will start modifying the columns and column
+values.</p>
+<h3 id="adding-a-new-column">Adding a New Column</h3>
+<p>Let’s add a weight column in the DataFrame</p>
+<div class="sourceCode" id="cb42"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> [<span class="dv">74</span>, <span class="dv">78</span>, <span class="dv">69</span>]</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;Weight&#39;</span>] <span class="op">=</span> weights</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Name
+</th>
+<th>
+Country
+</th>
+<th>
+City
+</th>
+<th>
+Weight
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+Asabeneh
+</td>
+<td>
+Finland
+</td>
+<td>
+Helsinki
+</td>
+<td>
+74
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+David
+</td>
+<td>
+UK
+</td>
+<td>
+London
+</td>
+<td>
+78
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+John
+</td>
+<td>
+Sweden
+</td>
+<td>
+Stockholm
+</td>
+<td>
+69
+</td>
+</tr>
+</tbody>
+</table>
+<p>Let’s add a height column into the DataFrame aswell</p>
+<div class="sourceCode" id="cb43"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>heights <span class="op">=</span> [<span class="dv">173</span>, <span class="dv">175</span>, <span class="dv">169</span>]</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;Height&#39;</span>] <span class="op">=</span> heights</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code></pre></div>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Name
+</th>
+<th>
+Country
+</th>
+<th>
+City
+</th>
+<th>
+Weight
+</th>
+<th>
+Height
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+Asabeneh
+</td>
+<td>
+Finland
+</td>
+<td>
+Helsinki
+</td>
+<td>
+74
+</td>
+<td>
+173
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+David
+</td>
+<td>
+UK
+</td>
+<td>
+London
+</td>
+<td>
+78
+</td>
+<td>
+175
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+John
+</td>
+<td>
+Sweden
+</td>
+<td>
+Stockholm
+</td>
+<td>
+69
+</td>
+<td>
+169
+</td>
+</tr>
+</tbody>
+</table>
+<p>As you can see in the DataFrame above, we did add new columns, Weight
+and Height. Let’s add one additional column called BMI(Body Mass Index)
+by calculating their BMI using thier mass and height. BMI is mass
+divided by height squared (in meters) - Weight/Height * Height.</p>
+<p>As you can see, the height is in centimeters, so we shoud change it
+to meters. Let’s modify the height row.</p>
+<h3 id="modifying-column-values">Modifying column values</h3>
+<div class="sourceCode" id="cb44"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;Height&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;Height&#39;</span>] <span class="op">*</span> <span class="fl">0.01</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Name
+</th>
+<th>
+Country
+</th>
+<th>
+City
+</th>
+<th>
+Weight
+</th>
+<th>
+Height
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+Asabeneh
+</td>
+<td>
+Finland
+</td>
+<td>
+Helsinki
+</td>
+<td>
+74
+</td>
+<td>
+1.73
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+David
+</td>
+<td>
+UK
+</td>
+<td>
+London
+</td>
+<td>
+78
+</td>
+<td>
+1.75
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+John
+</td>
+<td>
+Sweden
+</td>
+<td>
+Stockholm
+</td>
+<td>
+69
+</td>
+<td>
+1.69
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb45"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using functions makes our code clean, but you can calculate the bmi without one</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_bmi ():</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>    weights <span class="op">=</span> df[<span class="st">&#39;Weight&#39;</span>]</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>    heights <span class="op">=</span> df[<span class="st">&#39;Height&#39;</span>]</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>    bmi <span class="op">=</span> []</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> w,h <span class="kw">in</span> <span class="bu">zip</span>(weights, heights):</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>        b <span class="op">=</span> w<span class="op">/</span>(h<span class="op">*</span>h)</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>        bmi.append(b)</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> bmi</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>bmi <span class="op">=</span> calculate_bmi()</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;BMI&#39;</span>] <span class="op">=</span> bmi</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Name
+</th>
+<th>
+Country
+</th>
+<th>
+City
+</th>
+<th>
+Weight
+</th>
+<th>
+Height
+</th>
+<th>
+BMI
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+Asabeneh
+</td>
+<td>
+Finland
+</td>
+<td>
+Helsinki
+</td>
+<td>
+74
+</td>
+<td>
+1.73
+</td>
+<td>
+24.725183
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+David
+</td>
+<td>
+UK
+</td>
+<td>
+London
+</td>
+<td>
+78
+</td>
+<td>
+1.75
+</td>
+<td>
+25.469388
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+John
+</td>
+<td>
+Sweden
+</td>
+<td>
+Stockholm
+</td>
+<td>
+69
+</td>
+<td>
+1.69
+</td>
+<td>
+24.158818
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="formating-dataframe-columns">Formating DataFrame columns</h3>
+<p>The BMI column values of the DataFrame are float with many
+significant digits after decimal. Let’s change it to one significant
+digit after point.</p>
+<div class="sourceCode" id="cb47"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;BMI&#39;</span>] <span class="op">=</span> <span class="bu">round</span>(df[<span class="st">&#39;BMI&#39;</span>], <span class="dv">1</span>)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code></pre></div>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Name
+</th>
+<th>
+Country
+</th>
+<th>
+City
+</th>
+<th>
+Weight
+</th>
+<th>
+Height
+</th>
+<th>
+BMI
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+Asabeneh
+</td>
+<td>
+Finland
+</td>
+<td>
+Helsinki
+</td>
+<td>
+74
+</td>
+<td>
+1.73
+</td>
+<td>
+24.7
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+David
+</td>
+<td>
+UK
+</td>
+<td>
+London
+</td>
+<td>
+78
+</td>
+<td>
+1.75
+</td>
+<td>
+25.5
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+John
+</td>
+<td>
+Sweden
+</td>
+<td>
+Stockholm
+</td>
+<td>
+69
+</td>
+<td>
+1.69
+</td>
+<td>
+24.2
+</td>
+</tr>
+</tbody>
+</table>
+<p>The information in the DataFrame seems not yet complete, let’s add
+birth year and current year columns.</p>
+<div class="sourceCode" id="cb48"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>birth_year <span class="op">=</span> [<span class="st">&#39;1769&#39;</span>, <span class="st">&#39;1985&#39;</span>, <span class="st">&#39;1990&#39;</span>]</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>current_year <span class="op">=</span> pd.Series(<span class="dv">2020</span>, index<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">1</span>,<span class="dv">2</span>])</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;Birth Year&#39;</span>] <span class="op">=</span> birth_year</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;Current Year&#39;</span>] <span class="op">=</span> current_year</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Name
+</th>
+<th>
+Country
+</th>
+<th>
+City
+</th>
+<th>
+Weight
+</th>
+<th>
+Height
+</th>
+<th>
+BMI
+</th>
+<th>
+Birth Year
+</th>
+<th>
+Current Year
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+Asabeneh
+</td>
+<td>
+Finland
+</td>
+<td>
+Helsinki
+</td>
+<td>
+74
+</td>
+<td>
+1.73
+</td>
+<td>
+24.7
+</td>
+<td>
+1769
+</td>
+<td>
+2020
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+David
+</td>
+<td>
+UK
+</td>
+<td>
+London
+</td>
+<td>
+78
+</td>
+<td>
+1.75
+</td>
+<td>
+25.5
+</td>
+<td>
+1985
+</td>
+<td>
+2020
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+John
+</td>
+<td>
+Sweden
+</td>
+<td>
+Stockholm
+</td>
+<td>
+69
+</td>
+<td>
+1.69
+</td>
+<td>
+24.2
+</td>
+<td>
+1990
+</td>
+<td>
+2020
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="checking-data-types-of-column-values">Checking data types of
+Column values</h2>
+<div class="sourceCode" id="cb49"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.Weight.dtype)</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">dtype</span><span class="er">(</span><span class="st">&#39;int64&#39;</span><span class="kw">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;Birth Year&#39;</span>].dtype <span class="co"># it gives string object , we should change this to number</span></span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;Birth Year&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;Birth Year&#39;</span>].astype(<span class="st">&#39;int&#39;</span>)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;Birth Year&#39;</span>].dtype) <span class="co"># let&#39;s check the data type now</span></span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">dtype</span><span class="er">(</span><span class="st">&#39;int32&#39;</span><span class="kw">)</span></span></code></pre></div>
+<p>Now same for the current year:</p>
+<div class="sourceCode" id="cb54"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;Current Year&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;Current Year&#39;</span>].astype(<span class="st">&#39;int&#39;</span>)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;Current Year&#39;</span>].dtype</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">dtype</span><span class="er">(</span><span class="st">&#39;int32&#39;</span><span class="kw">)</span></span></code></pre></div>
+<p>Now, the column values of birth year and current year are integers.
+We can calculate the age.</p>
+<div class="sourceCode" id="cb56"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>ages <span class="op">=</span> df[<span class="st">&#39;Current Year&#39;</span>] <span class="op">-</span> df[<span class="st">&#39;Birth Year&#39;</span>]</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>ages</span></code></pre></div>
+<pre><code>0    251
+1     35
+2     30
+dtype: int32</code></pre>
+<div class="sourceCode" id="cb58"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;Ages&#39;</span>] <span class="op">=</span> ages</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span></code></pre></div>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Name
+</th>
+<th>
+Country
+</th>
+<th>
+City
+</th>
+<th>
+Weight
+</th>
+<th>
+Height
+</th>
+<th>
+BMI
+</th>
+<th>
+Birth Year
+</th>
+<th>
+Current Year
+</th>
+<th>
+Ages
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+Asabeneh
+</td>
+<td>
+Finland
+</td>
+<td>
+Helsinki
+</td>
+<td>
+74
+</td>
+<td>
+1.73
+</td>
+<td>
+24.7
+</td>
+<td>
+1769
+</td>
+<td>
+2019
+</td>
+<td>
+250
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+David
+</td>
+<td>
+UK
+</td>
+<td>
+London
+</td>
+<td>
+78
+</td>
+<td>
+1.75
+</td>
+<td>
+25.5
+</td>
+<td>
+1985
+</td>
+<td>
+2019
+</td>
+<td>
+34
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+John
+</td>
+<td>
+Sweden
+</td>
+<td>
+Stockholm
+</td>
+<td>
+69
+</td>
+<td>
+1.69
+</td>
+<td>
+24.2
+</td>
+<td>
+1990
+</td>
+<td>
+2019
+</td>
+<td>
+29
+</td>
+</tr>
+</tbody>
+</table>
+<p>The person in the first row lived so far for 251 years. It is
+unlikely for someone to live so long. Either it is a typo or the data is
+cooked. So lets fill that data with average of the columns without
+including outlier.</p>
+<p>mean = (35 + 30)/ 2</p>
+<div class="sourceCode" id="cb59"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>mean <span class="op">=</span> (<span class="dv">35</span> <span class="op">+</span> <span class="dv">30</span>)<span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;Mean: &#39;</span>,mean)    <span class="co">#it is good to add some description to the output, so we know what is what</span></span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>   <span class="ex">Mean:</span>  32.5</span></code></pre></div>
+<h3 id="boolean-indexing">Boolean Indexing</h3>
+<div class="sourceCode" id="cb61"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[df[<span class="st">&#39;Ages&#39;</span>] <span class="op">&gt;</span> <span class="dv">120</span>])</span></code></pre></div>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Name
+</th>
+<th>
+Country
+</th>
+<th>
+City
+</th>
+<th>
+Weight
+</th>
+<th>
+Height
+</th>
+<th>
+BMI
+</th>
+<th>
+Birth Year
+</th>
+<th>
+Current Year
+</th>
+<th>
+Ages
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+Asabeneh
+</td>
+<td>
+Finland
+</td>
+<td>
+Helsinki
+</td>
+<td>
+74
+</td>
+<td>
+1.73
+</td>
+<td>
+24.7
+</td>
+<td>
+1769
+</td>
+<td>
+2020
+</td>
+<td>
+251
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb62"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[df[<span class="st">&#39;Ages&#39;</span>] <span class="op">&lt;</span> <span class="dv">120</span>])</span></code></pre></div>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th>
+</th>
+<th>
+Name
+</th>
+<th>
+Country
+</th>
+<th>
+City
+</th>
+<th>
+Weight
+</th>
+<th>
+Height
+</th>
+<th>
+BMI
+</th>
+<th>
+Birth Year
+</th>
+<th>
+Current Year
+</th>
+<th>
+Ages
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+1
+</td>
+<td>
+David
+</td>
+<td>
+UK
+</td>
+<td>
+London
+</td>
+<td>
+78
+</td>
+<td>
+1.75
+</td>
+<td>
+25.5
+</td>
+<td>
+1985
+</td>
+<td>
+2020
+</td>
+<td>
+35
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+John
+</td>
+<td>
+Sweden
+</td>
+<td>
+Stockholm
+</td>
+<td>
+69
+</td>
+<td>
+1.69
+</td>
+<td>
+24.2
+</td>
+<td>
+1990
+</td>
+<td>
+2020
+</td>
+<td>
+30
+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="exercises-day-25">Exercises: Day 25</h2>
+<ol type="1">
+<li>Read the hacker_news.csv file from data directory</li>
+<li>Get the first five rows</li>
+<li>Get the last five rows</li>
+<li>Get the title column as pandas series</li>
+<li>Count the number of rows and columns
+<ul>
+<li>Filter the titles which contain python</li>
+<li>Filter the titles which contain JavaScript</li>
+<li>Explore the data and make sense of it</li>
+</ul></li>
+</ol>

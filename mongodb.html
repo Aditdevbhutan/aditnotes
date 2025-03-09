@@ -1,0 +1,591 @@
+<ul>
+<li><a href="#-day-27">📘 Day 27</a></li>
+<li><a href="#python-with-mongodb">Python with MongoDB</a>
+<ul>
+<li><a href="#mongodb">MongoDB</a>
+<ul>
+<li><a href="#sql-versus-nosql">SQL versus NoSQL</a></li>
+<li><a href="#getting-connection-stringmongodb-uri">Getting Connection
+String(MongoDB URI)</a></li>
+<li><a
+href="#connecting-flask-application-to-mongodb-cluster">Connecting Flask
+application to MongoDB Cluster</a></li>
+<li><a href="#creating-a-database-and-collection">Creating a database
+and collection</a></li>
+<li><a href="#inserting-many-documents-to-collection">Inserting many
+documents to collection</a></li>
+<li><a href="#mongodb-find">MongoDB Find</a></li>
+<li><a href="#find-with-query">Find with Query</a></li>
+<li><a href="#find-query-with-modifier">Find query with
+modifier</a></li>
+<li><a href="#limiting-documents">Limiting documents</a></li>
+<li><a href="#find-with-sort">Find with sort</a></li>
+<li><a href="#update-with-query">Update with query</a></li>
+<li><a href="#delete-document">Delete Document</a></li>
+<li><a href="#drop-a-collection">Drop a collection</a></li>
+</ul></li>
+<li><a href="#-exercises-day-27">💻 Exercises: Day 27</a></li>
+</ul></li>
+</ul>
+<h1 id="day-27">📘 Day 27</h1>
+<h1 id="python-with-mongodb">Python with MongoDB</h1>
+<p>Python is a backend technology and it can be connected with different
+data base applications. It can be connected to both SQL and noSQL
+databases. In this section, we connect Python with MongoDB database
+which is noSQL database.</p>
+<h2 id="mongodb">MongoDB</h2>
+<p>MongoDB is a NoSQL database. MongoDB stores data in a JSON like
+document which make MongoDB very flexible and scalable. Let us see the
+different terminologies of SQL and NoSQL databases. The following table
+will make the difference between SQL versus NoSQL databases.</p>
+<h3 id="sql-versus-nosql">SQL versus NoSQL</h3>
+<figure>
+<img src="../images/mongoDB/sql-vs-nosql.png" alt="SQL versus NoSQL" />
+<figcaption aria-hidden="true">SQL versus NoSQL</figcaption>
+</figure>
+<p>In this section, we will focus on a NoSQL database MongoDB. Lets sign
+up on <a href="https://www.mongodb.com/">mongoDB</a> by click on the
+sign in button then click register on the next page.</p>
+<figure>
+<img src="../images/mongoDB/mongodb-signup-page.png"
+alt="MongoDB Sign up pages" />
+<figcaption aria-hidden="true">MongoDB Sign up pages</figcaption>
+</figure>
+<p>Complete the fields and click continue</p>
+<figure>
+<img src="../images/mongoDB/mongodb-register.png"
+alt="Mongodb register" />
+<figcaption aria-hidden="true">Mongodb register</figcaption>
+</figure>
+<p>Select the free plan</p>
+<figure>
+<img src="../images/mongoDB/mongodb-free.png" alt="Mongodb free plan" />
+<figcaption aria-hidden="true">Mongodb free plan</figcaption>
+</figure>
+<p>Choose the proximate free region and give any name for you
+cluster.</p>
+<figure>
+<img src="../images/mongoDB/mongodb-cluster-name.png"
+alt="Mongodb cluster name" />
+<figcaption aria-hidden="true">Mongodb cluster name</figcaption>
+</figure>
+<p>Now, a free sandbox is created</p>
+<figure>
+<img src="../images/mongoDB/mongodb-sandbox.png"
+alt="Mongodb sandbox" />
+<figcaption aria-hidden="true">Mongodb sandbox</figcaption>
+</figure>
+<p>All local host access</p>
+<figure>
+<img src="../images/mongoDB/mongodb-allow-ip-access.png"
+alt="Mongodb allow ip access" />
+<figcaption aria-hidden="true">Mongodb allow ip access</figcaption>
+</figure>
+<p>Add user and password</p>
+<figure>
+<img src="../images/mongoDB/mongodb-add-user.png"
+alt="Mongodb add user" />
+<figcaption aria-hidden="true">Mongodb add user</figcaption>
+</figure>
+<p>Create a mongoDB uri link</p>
+<figure>
+<img src="../images/mongoDB/mongodb-create-uri.png"
+alt="Mongodb create uri" />
+<figcaption aria-hidden="true">Mongodb create uri</figcaption>
+</figure>
+<p>Select Python 3.6 or above driver</p>
+<figure>
+<img src="../images/mongoDB/mongodb-python-driver.png"
+alt="Mongodb python driver" />
+<figcaption aria-hidden="true">Mongodb python driver</figcaption>
+</figure>
+<h3 id="getting-connection-stringmongodb-uri">Getting Connection
+String(MongoDB URI)</h3>
+<p>Copy the connection string link and you will get something like
+this:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mongodb+srv://asabeneh:</span><span class="op">&lt;</span>password<span class="op">&gt;</span>@30daysofpython-twxkr.mongodb.net/test<span class="pp">?</span>retryWrites=true<span class="kw">&amp;</span><span class="va">w</span><span class="op">=</span>majority</span></code></pre></div>
+<p>Do not worry about the url, it is a means to connect your application
+with mongoDB. Let us replace the password placeholder with the password
+you used to add a user.</p>
+<p><strong>Example:</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mongodb+srv://asabeneh:123123123@30daysofpython-twxkr.mongodb.net/test?retryWrites=true</span><span class="kw">&amp;</span><span class="va">w</span><span class="op">=</span>majority</span></code></pre></div>
+<p>Now, I replaced everything and the password is 123123 and the name of
+the database is <em>thirty_days_python</em>. This is just an example,
+your password must be stronger than the example password.</p>
+<p>Python needs a mongoDB driver to access mongoDB database. We will use
+<em>pymongo</em> with <em>dnspython</em> to connect our application with
+mongoDB base . Inside your project directory install pymongo and
+dnspython.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install pymongo dnspython</span></code></pre></div>
+<p>The “dnspython” module must be installed to use mongodb+srv:// URIs.
+The dnspython is a DNS toolkit for Python. It supports almost all record
+types.</p>
+<h3 id="connecting-flask-application-to-mongodb-cluster">Connecting
+Flask application to MongoDB Cluster</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>MONGODB_URI <span class="op">=</span> <span class="st">&#39;mongodb+srv://asabeneh:your_password_goes_here@30daysofpython-twxkr.mongodb.net/test?retryWrites=true&amp;w=majority&#39;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> pymongo.MongoClient(MONGODB_URI)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(client.list_database_names())</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for deployment we use the environ</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to make it work for both production and development</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    port <span class="op">=</span> <span class="bu">int</span>(os.environ.get(<span class="st">&quot;PORT&quot;</span>, <span class="dv">5000</span>))</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    app.run(debug<span class="op">=</span><span class="va">True</span>, host<span class="op">=</span><span class="st">&#39;0.0.0.0&#39;</span>, port<span class="op">=</span>port)</span></code></pre></div>
+<p>When we run the above code we get the default mongoDB databases.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[</span><span class="st">&#39;admin&#39;</span><span class="ex">,</span> <span class="st">&#39;local&#39;</span>]</span></code></pre></div>
+<h3 id="creating-a-database-and-collection">Creating a database and
+collection</h3>
+<p>Let us create a database, database and collection in mongoDB will be
+created if it doesn’t exist. Let’s create a data base name
+<em>thirty_days_of_python</em> and <em>students</em> collection.</p>
+<p>To create a database:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">db</span> = client.name_of_databse <span class="co"># we can create a database like this or the second way</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">db</span> = client<span class="pp">[</span><span class="st">&#39;name_of_database&#39;</span><span class="pp">]</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>MONGODB_URI <span class="op">=</span> <span class="st">&#39;mongodb+srv://asabeneh:your_password_goes_here@30daysofpython-twxkr.mongodb.net/test?retryWrites=true&amp;w=majority&#39;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> pymongo.MongoClient(MONGODB_URI)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating database</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> client.thirty_days_of_python</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating students collection and inserting a document</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>db.students.insert_one({<span class="st">&#39;name&#39;</span>: <span class="st">&#39;Asabeneh&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;age&#39;</span>: <span class="dv">250</span>})</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(client.list_database_names())</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for deployment we use the environ</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to make it work for both production and development</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    port <span class="op">=</span> <span class="bu">int</span>(os.environ.get(<span class="st">&quot;PORT&quot;</span>, <span class="dv">5000</span>))</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    app.run(debug<span class="op">=</span><span class="va">True</span>, host<span class="op">=</span><span class="st">&#39;0.0.0.0&#39;</span>, port<span class="op">=</span>port)</span></code></pre></div>
+<p>After we create a database, we also created a students collection and
+we used <em>insert_one()</em> method to insert a document. Now, the
+database <em>thirty_days_of_python</em> and <em>students</em> collection
+have been created and the document has been inserted. Check your mongoDB
+cluster and you will see both the database and the collection. Inside
+the collection, there will be a document.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[</span><span class="st">&#39;thirty_days_of_python&#39;</span><span class="ex">,</span> <span class="st">&#39;admin&#39;</span>, <span class="st">&#39;local&#39;</span>]</span></code></pre></div>
+<p>If you see this on the mongoDB cluster, it means you have
+successfully created a database and a collection.</p>
+<figure>
+<img src="../images/mongoDB/mongodb-creating_database.png"
+alt="Creating database and collection" />
+<figcaption aria-hidden="true">Creating database and
+collection</figcaption>
+</figure>
+<p>If you have seen on the figure, the document has been created with a
+long id which acts as a primary key. Every time we create a document
+mongoDB create and unique id for it.</p>
+<h3 id="inserting-many-documents-to-collection">Inserting many documents
+to collection</h3>
+<p>The <em>insert_one()</em> method inserts one item at a time if we
+want to insert many documents at once either we use
+<em>insert_many()</em> method or for loop. We can use for loop to inset
+many documents at once.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>MONGODB_URI <span class="op">=</span> <span class="st">&#39;mongodb+srv://asabeneh:your_password_goes_here@30daysofpython-twxkr.mongodb.net/test?retryWrites=true&amp;w=majority&#39;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> pymongo.MongoClient(MONGODB_URI)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>students <span class="op">=</span> [</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        {<span class="st">&#39;name&#39;</span>:<span class="st">&#39;David&#39;</span>,<span class="st">&#39;country&#39;</span>:<span class="st">&#39;UK&#39;</span>,<span class="st">&#39;city&#39;</span>:<span class="st">&#39;London&#39;</span>,<span class="st">&#39;age&#39;</span>:<span class="dv">34</span>},</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        {<span class="st">&#39;name&#39;</span>:<span class="st">&#39;John&#39;</span>,<span class="st">&#39;country&#39;</span>:<span class="st">&#39;Sweden&#39;</span>,<span class="st">&#39;city&#39;</span>:<span class="st">&#39;Stockholm&#39;</span>,<span class="st">&#39;age&#39;</span>:<span class="dv">28</span>},</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        {<span class="st">&#39;name&#39;</span>:<span class="st">&#39;Sami&#39;</span>,<span class="st">&#39;country&#39;</span>:<span class="st">&#39;Finland&#39;</span>,<span class="st">&#39;city&#39;</span>:<span class="st">&#39;Helsinki&#39;</span>,<span class="st">&#39;age&#39;</span>:<span class="dv">25</span>},</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> student <span class="kw">in</span> students:</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    db.students.insert_one(student)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for deployment we use the environ</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to make it work for both production and development</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    port <span class="op">=</span> <span class="bu">int</span>(os.environ.get(<span class="st">&quot;PORT&quot;</span>, <span class="dv">5000</span>))</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    app.run(debug<span class="op">=</span><span class="va">True</span>, host<span class="op">=</span><span class="st">&#39;0.0.0.0&#39;</span>, port<span class="op">=</span>port)</span></code></pre></div>
+<h3 id="mongodb-find">MongoDB Find</h3>
+<p>The <em>find()</em> and <em>findOne()</em> methods are common method
+to find data in a collection in mongoDB database. It is similar to the
+SELECT statement in a MySQL database. Let us use the <em>find_one()</em>
+method to get a document in a database collection.</p>
+<ul>
+<li>*find_one({“_id”: ObjectId(“id”}): Gets the first occurrence if an
+id is not provided</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>MONGODB_URI <span class="op">=</span> <span class="st">&#39;mongodb+srv://asabeneh:your_password_goes_here@30daysofpython-twxkr.mongodb.net/test?retryWrites=true&amp;w=majority&#39;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> pymongo.MongoClient(MONGODB_URI)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> client[<span class="st">&#39;thirty_days_of_python&#39;</span>] <span class="co"># accessing the database</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>student <span class="op">=</span> db.students.find_one()</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(student)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for deployment we use the environ</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to make it work for both production and development</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    port <span class="op">=</span> <span class="bu">int</span>(os.environ.get(<span class="st">&quot;PORT&quot;</span>, <span class="dv">5000</span>))</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    app.run(debug<span class="op">=</span><span class="va">True</span>, host<span class="op">=</span><span class="st">&#39;0.0.0.0&#39;</span>, port<span class="op">=</span>port)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a21f106fe2d315bbc8b&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;Asabeneh&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;age&#39;</span>: 250}</span></code></pre></div>
+<p>The above query returns the first entry but we can target specific
+document using specific _id. Let us do one example, use David’s id to
+get David object. ‘_id’:ObjectId(‘5df68a23f106fe2d315bbc8c’)</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bson.objectid <span class="im">import</span> ObjectId <span class="co"># id object</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>MONGODB_URI <span class="op">=</span> <span class="st">&#39;mongodb+srv://asabeneh:your_password_goes_here@30daysofpython-twxkr.mongodb.net/test?retryWrites=true&amp;w=majority&#39;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> pymongo.MongoClient(MONGODB_URI)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> client[<span class="st">&#39;thirty_days_of_python&#39;</span>] <span class="co"># accessing the database</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>student <span class="op">=</span> db.students.find_one({<span class="st">&#39;_id&#39;</span>:ObjectId(<span class="st">&#39;5df68a23f106fe2d315bbc8c&#39;</span>)})</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(student)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for deployment we use the environ</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to make it work for both production and development</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    port <span class="op">=</span> <span class="bu">int</span>(os.environ.get(<span class="st">&quot;PORT&quot;</span>, <span class="dv">5000</span>))</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    app.run(debug<span class="op">=</span><span class="va">True</span>, host<span class="op">=</span><span class="st">&#39;0.0.0.0&#39;</span>, port<span class="op">=</span>port)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8c&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;David&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;UK&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;London&#39;</span>, <span class="st">&#39;age&#39;</span>: 34}</span></code></pre></div>
+<p>We have seen, how to use <em>find_one()</em> using the above
+examples. Let’s move one to <em>find()</em></p>
+<ul>
+<li><em>find()</em>: returns all the occurrence from a collection if we
+don’t pass a query object. The object is pymongo.cursor object.</li>
+</ul>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>MONGODB_URI <span class="op">=</span> <span class="st">&#39;mongodb+srv://asabeneh:your_password_goes_here@30daysofpython-twxkr.mongodb.net/test?retryWrites=true&amp;w=majority&#39;</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> pymongo.MongoClient(MONGODB_URI)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> client[<span class="st">&#39;thirty_days_of_python&#39;</span>] <span class="co"># accessing the database</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>students <span class="op">=</span> db.students.find()</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> student <span class="kw">in</span> students:</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(student)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for deployment we use the environ</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to make it work for both production and development</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    port <span class="op">=</span> <span class="bu">int</span>(os.environ.get(<span class="st">&quot;PORT&quot;</span>, <span class="dv">5000</span>))</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    app.run(debug<span class="op">=</span><span class="va">True</span>, host<span class="op">=</span><span class="st">&#39;0.0.0.0&#39;</span>, port<span class="op">=</span>port)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a21f106fe2d315bbc8b&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;Asabeneh&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;age&#39;</span>: 250}</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8c&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;David&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;UK&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;London&#39;</span>, <span class="st">&#39;age&#39;</span>: 34}</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8d&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;John&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Sweden&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Stockholm&#39;</span>, <span class="st">&#39;age&#39;</span>: 28}</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8e&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;Sami&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;age&#39;</span>: 25}</span></code></pre></div>
+<p>We can specify which fields to return by passing second object in the
+<em>find({}, {})</em>. 0 means not include and 1 means include but we
+can not mix 0 and 1, except for _id.</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>MONGODB_URI <span class="op">=</span> <span class="st">&#39;mongodb+srv://asabeneh:your_password_goes_here@30daysofpython-twxkr.mongodb.net/test?retryWrites=true&amp;w=majority&#39;</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> pymongo.MongoClient(MONGODB_URI)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> client[<span class="st">&#39;thirty_days_of_python&#39;</span>] <span class="co"># accessing the database</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>students <span class="op">=</span> db.students.find({}, {<span class="st">&quot;_id&quot;</span>:<span class="dv">0</span>,  <span class="st">&quot;name&quot;</span>: <span class="dv">1</span>, <span class="st">&quot;country&quot;</span>:<span class="dv">1</span>}) <span class="co"># 0 means not include and 1 means include</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> student <span class="kw">in</span> students:</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(student)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for deployment we use the environ</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to make it work for both production and development</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    port <span class="op">=</span> <span class="bu">int</span>(os.environ.get(<span class="st">&quot;PORT&quot;</span>, <span class="dv">5000</span>))</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    app.run(debug<span class="op">=</span><span class="va">True</span>, host<span class="op">=</span><span class="st">&#39;0.0.0.0&#39;</span>, port<span class="op">=</span>port)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;name&#39;</span><span class="ex">:</span> <span class="st">&#39;Asabeneh&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>}</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;name&#39;</span><span class="ex">:</span> <span class="st">&#39;David&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;UK&#39;</span>}</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;name&#39;</span><span class="ex">:</span> <span class="st">&#39;John&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Sweden&#39;</span>}</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;name&#39;</span><span class="ex">:</span> <span class="st">&#39;Sami&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>}</span></code></pre></div>
+<h3 id="find-with-query">Find with Query</h3>
+<p>In mongoDB find take a query object. We can pass a query object and
+we can filter the documents we like to filter out.</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>MONGODB_URI <span class="op">=</span> <span class="st">&#39;mongodb+srv://asabeneh:your_password_goes_here@30daysofpython-twxkr.mongodb.net/test?retryWrites=true&amp;w=majority&#39;</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> pymongo.MongoClient(MONGODB_URI)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> client[<span class="st">&#39;thirty_days_of_python&#39;</span>] <span class="co"># accessing the database</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> {</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;country&quot;</span>:<span class="st">&quot;Finland&quot;</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>students <span class="op">=</span> db.students.find(query)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> student <span class="kw">in</span> students:</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(student)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for deployment we use the environ</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to make it work for both production and development</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    port <span class="op">=</span> <span class="bu">int</span>(os.environ.get(<span class="st">&quot;PORT&quot;</span>, <span class="dv">5000</span>))</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>    app.run(debug<span class="op">=</span><span class="va">True</span>, host<span class="op">=</span><span class="st">&#39;0.0.0.0&#39;</span>, port<span class="op">=</span>port)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a21f106fe2d315bbc8b&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;Asabeneh&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;age&#39;</span>: 250}</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8e&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;Sami&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;age&#39;</span>: 25}</span></code></pre></div>
+<p>Query with modifiers</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymongo</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>MONGODB_URI <span class="op">=</span> <span class="st">&#39;mongodb+srv://asabeneh:your_password_goes_here@30daysofpython-twxkr.mongodb.net/test?retryWrites=true&amp;w=majority&#39;</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> pymongo.MongoClient(MONGODB_URI)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> client[<span class="st">&#39;thirty_days_of_python&#39;</span>] <span class="co"># accessing the database</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> {</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;city&quot;</span>:<span class="st">&quot;Helsinki&quot;</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>students <span class="op">=</span> db.students.find(query)</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> student <span class="kw">in</span> students:</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(student)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for deployment we use the environ</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to make it work for both production and development</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    port <span class="op">=</span> <span class="bu">int</span>(os.environ.get(<span class="st">&quot;PORT&quot;</span>, <span class="dv">5000</span>))</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    app.run(debug<span class="op">=</span><span class="va">True</span>, host<span class="op">=</span><span class="st">&#39;0.0.0.0&#39;</span>, port<span class="op">=</span>port)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a21f106fe2d315bbc8b&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;Asabeneh&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;age&#39;</span>: 250}</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8e&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;Sami&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;age&#39;</span>: 25}</span></code></pre></div>
+<h3 id="find-query-with-modifier">Find query with modifier</h3>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymongo</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>MONGODB_URI <span class="op">=</span> <span class="st">&#39;mongodb+srv://asabeneh:your_password_goes_here@30daysofpython-twxkr.mongodb.net/test?retryWrites=true&amp;w=majority&#39;</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> pymongo.MongoClient(MONGODB_URI)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> client[<span class="st">&#39;thirty_days_of_python&#39;</span>] <span class="co"># accessing the database</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> {</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;country&quot;</span>:<span class="st">&quot;Finland&quot;</span>,</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;city&quot;</span>:<span class="st">&quot;Helsinki&quot;</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>students <span class="op">=</span> db.students.find(query)</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> student <span class="kw">in</span> students:</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(student)</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for deployment we use the environ</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to make it work for both production and development</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>    port <span class="op">=</span> <span class="bu">int</span>(os.environ.get(<span class="st">&quot;PORT&quot;</span>, <span class="dv">5000</span>))</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>    app.run(debug<span class="op">=</span><span class="va">True</span>, host<span class="op">=</span><span class="st">&#39;0.0.0.0&#39;</span>, port<span class="op">=</span>port)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a21f106fe2d315bbc8b&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;Asabeneh&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;age&#39;</span>: 250}</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8e&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;Sami&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;age&#39;</span>: 25}</span></code></pre></div>
+<p>Query with modifiers</p>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymongo</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>MONGODB_URI <span class="op">=</span> <span class="st">&#39;mongodb+srv://asabeneh:your_password_goes_here@30daysofpython-twxkr.mongodb.net/test?retryWrites=true&amp;w=majority&#39;</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> pymongo.MongoClient(MONGODB_URI)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> client[<span class="st">&#39;thirty_days_of_python&#39;</span>] <span class="co"># accessing the database</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> {<span class="st">&quot;age&quot;</span>:{<span class="st">&quot;$gt&quot;</span>:<span class="dv">30</span>}}</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>students <span class="op">=</span> db.students.find(query)</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> student <span class="kw">in</span> students:</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(student)</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for deployment we use the environ</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to make it work for both production and development</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    port <span class="op">=</span> <span class="bu">int</span>(os.environ.get(<span class="st">&quot;PORT&quot;</span>, <span class="dv">5000</span>))</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    app.run(debug<span class="op">=</span><span class="va">True</span>, host<span class="op">=</span><span class="st">&#39;0.0.0.0&#39;</span>, port<span class="op">=</span>port)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a21f106fe2d315bbc8b&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;Asabeneh&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;age&#39;</span>: 250}</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8c&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;David&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;UK&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;London&#39;</span>, <span class="st">&#39;age&#39;</span>: 34}</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymongo</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>MONGODB_URI <span class="op">=</span> <span class="st">&#39;mongodb+srv://asabeneh:your_password_goes_here@30daysofpython-twxkr.mongodb.net/test?retryWrites=true&amp;w=majority&#39;</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> pymongo.MongoClient(MONGODB_URI)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> client[<span class="st">&#39;thirty_days_of_python&#39;</span>] <span class="co"># accessing the database</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> {<span class="st">&quot;age&quot;</span>:{<span class="st">&quot;$gt&quot;</span>:<span class="dv">30</span>}}</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>students <span class="op">=</span> db.students.find(query)</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> student <span class="kw">in</span> students:</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(student)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8d&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;John&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Sweden&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Stockholm&#39;</span>, <span class="st">&#39;age&#39;</span>: 28}</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8e&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;Sami&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;age&#39;</span>: 25}</span></code></pre></div>
+<h3 id="limiting-documents">Limiting documents</h3>
+<p>We can limit the number of documents we return using the
+<em>limit()</em> method.</p>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymongo</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>MONGODB_URI <span class="op">=</span> <span class="st">&#39;mongodb+srv://asabeneh:your_password_goes_here@30daysofpython-twxkr.mongodb.net/test?retryWrites=true&amp;w=majority&#39;</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> pymongo.MongoClient(MONGODB_URI)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> client[<span class="st">&#39;thirty_days_of_python&#39;</span>] <span class="co"># accessing the database</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>db.students.find().limit(<span class="dv">3</span>)</span></code></pre></div>
+<h3 id="find-with-sort">Find with sort</h3>
+<p>By default, sort is in ascending order. We can change the sorting to
+descending order by adding -1 parameter.</p>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymongo</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>MONGODB_URI <span class="op">=</span> <span class="st">&#39;mongodb+srv://asabeneh:your_password_goes_here@30daysofpython-twxkr.mongodb.net/test?retryWrites=true&amp;w=majority&#39;</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> pymongo.MongoClient(MONGODB_URI)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> client[<span class="st">&#39;thirty_days_of_python&#39;</span>] <span class="co"># accessing the database</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>students <span class="op">=</span> db.students.find().sort(<span class="st">&#39;name&#39;</span>)</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> student <span class="kw">in</span> students:</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(student)</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>students <span class="op">=</span> db.students.find().sort(<span class="st">&#39;name&#39;</span>,<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> student <span class="kw">in</span> students:</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(student)</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>students <span class="op">=</span> db.students.find().sort(<span class="st">&#39;age&#39;</span>)</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> student <span class="kw">in</span> students:</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(student)</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>students <span class="op">=</span> db.students.find().sort(<span class="st">&#39;age&#39;</span>,<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> student <span class="kw">in</span> students:</span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(student)</span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for deployment we use the environ</span></span>
+<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to make it work for both production and development</span></span>
+<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>    port <span class="op">=</span> <span class="bu">int</span>(os.environ.get(<span class="st">&quot;PORT&quot;</span>, <span class="dv">5000</span>))</span>
+<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a>    app.run(debug<span class="op">=</span><span class="va">True</span>, host<span class="op">=</span><span class="st">&#39;0.0.0.0&#39;</span>, port<span class="op">=</span>port)</span></code></pre></div>
+<p>Ascending order</p>
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a21f106fe2d315bbc8b&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;Asabeneh&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;age&#39;</span>: 250}</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8c&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;David&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;UK&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;London&#39;</span>, <span class="st">&#39;age&#39;</span>: 34}</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8d&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;John&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Sweden&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Stockholm&#39;</span>, <span class="st">&#39;age&#39;</span>: 28}</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8e&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;Sami&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;age&#39;</span>: 25}</span></code></pre></div>
+<p>Descending order</p>
+<div class="sourceCode" id="cb31"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8e&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;Sami&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;age&#39;</span>: 25}</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8d&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;John&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Sweden&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Stockholm&#39;</span>, <span class="st">&#39;age&#39;</span>: 28}</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8c&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;David&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;UK&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;London&#39;</span>, <span class="st">&#39;age&#39;</span>: 34}</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a21f106fe2d315bbc8b&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;Asabeneh&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;age&#39;</span>: 250}</span></code></pre></div>
+<h3 id="update-with-query">Update with query</h3>
+<p>We will use <em>update_one()</em> method to update one item. It takes
+two object one is a query and the second is the new object. The first
+person, Asabeneh got a very implausible age. Let us update Asabeneh’s
+age.</p>
+<div class="sourceCode" id="cb32"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymongo</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>MONGODB_URI <span class="op">=</span> <span class="st">&#39;mongodb+srv://asabeneh:your_password_goes_here@30daysofpython-twxkr.mongodb.net/test?retryWrites=true&amp;w=majority&#39;</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> pymongo.MongoClient(MONGODB_URI)</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> client[<span class="st">&#39;thirty_days_of_python&#39;</span>] <span class="co"># accessing the database</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> {<span class="st">&#39;age&#39;</span>:<span class="dv">250</span>}</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>new_value <span class="op">=</span> {<span class="st">&#39;$set&#39;</span>:{<span class="st">&#39;age&#39;</span>:<span class="dv">38</span>}}</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>db.students.update_one(query, new_value)</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="co"># lets check the result if the age is modified</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> student <span class="kw">in</span> db.students.find():</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(student)</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for deployment we use the environ</span></span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to make it work for both production and development</span></span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>    port <span class="op">=</span> <span class="bu">int</span>(os.environ.get(<span class="st">&quot;PORT&quot;</span>, <span class="dv">5000</span>))</span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>    app.run(debug<span class="op">=</span><span class="va">True</span>, host<span class="op">=</span><span class="st">&#39;0.0.0.0&#39;</span>, port<span class="op">=</span>port)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a21f106fe2d315bbc8b&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;Asabeneh&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;age&#39;</span>: 38}</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8c&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;David&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;UK&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;London&#39;</span>, <span class="st">&#39;age&#39;</span>: 34}</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8d&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;John&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Sweden&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Stockholm&#39;</span>, <span class="st">&#39;age&#39;</span>: 28}</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8e&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;Sami&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;age&#39;</span>: 25}</span></code></pre></div>
+<p>When we want to update many documents at once we use
+<em>upate_many()</em> method.</p>
+<h3 id="delete-document">Delete Document</h3>
+<p>The method <em>delete_one()</em> deletes one document. The
+<em>delete_one()</em> takes a query object parameter. It only removes
+the first occurrence. Let us remove one John from the collection.</p>
+<div class="sourceCode" id="cb34"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymongo</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>MONGODB_URI <span class="op">=</span> <span class="st">&#39;mongodb+srv://asabeneh:your_password_goes_here@30daysofpython-twxkr.mongodb.net/test?retryWrites=true&amp;w=majority&#39;</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> pymongo.MongoClient(MONGODB_URI)</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> client[<span class="st">&#39;thirty_days_of_python&#39;</span>] <span class="co"># accessing the database</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> {<span class="st">&#39;name&#39;</span>:<span class="st">&#39;John&#39;</span>}</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>db.students.delete_one(query)</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> student <span class="kw">in</span> db.students.find():</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(student)</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a><span class="co"># lets check the result if the age is modified</span></span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> student <span class="kw">in</span> db.students.find():</span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(student)</span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for deployment we use the environ</span></span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to make it work for both production and development</span></span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>    port <span class="op">=</span> <span class="bu">int</span>(os.environ.get(<span class="st">&quot;PORT&quot;</span>, <span class="dv">5000</span>))</span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>    app.run(debug<span class="op">=</span><span class="va">True</span>, host<span class="op">=</span><span class="st">&#39;0.0.0.0&#39;</span>, port<span class="op">=</span>port)</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a21f106fe2d315bbc8b&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;Asabeneh&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;age&#39;</span>: 38}</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8c&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;David&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;UK&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;London&#39;</span>, <span class="st">&#39;age&#39;</span>: 34}</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">&#39;_id&#39;</span><span class="ex">:</span> ObjectId<span class="er">(</span><span class="st">&#39;5df68a23f106fe2d315bbc8e&#39;</span><span class="kw">)</span><span class="ex">,</span> <span class="st">&#39;name&#39;</span>: <span class="st">&#39;Sami&#39;</span>, <span class="st">&#39;country&#39;</span>: <span class="st">&#39;Finland&#39;</span>, <span class="st">&#39;city&#39;</span>: <span class="st">&#39;Helsinki&#39;</span>, <span class="st">&#39;age&#39;</span>: 25}</span></code></pre></div>
+<p>As you can see John has been removed from the collection.</p>
+<p>When we want to delete many documents we use <em>delete_many()</em>
+method, it takes a query object. If we pass an empty query object to
+<em>delete_many({})</em> it will delete all the documents in the
+collection.</p>
+<h3 id="drop-a-collection">Drop a collection</h3>
+<p>Using the <em>drop()</em> method we can delete a collection from a
+database.</p>
+<div class="sourceCode" id="cb36"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymongo</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>MONGODB_URI <span class="op">=</span> <span class="st">&#39;mongodb+srv://asabeneh:your_password_goes_here@30daysofpython-twxkr.mongodb.net/test?retryWrites=true&amp;w=majority&#39;</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> pymongo.MongoClient(MONGODB_URI)</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> client[<span class="st">&#39;thirty_days_of_python&#39;</span>] <span class="co"># accessing the database</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>db.students.drop()</span></code></pre></div>
+<p>Now, we have deleted the students collection from the database.</p>
+<h2 id="exercises-day-27">💻 Exercises: Day 27</h2>

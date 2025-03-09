@@ -1,0 +1,514 @@
+<ul>
+<li><a href="#python-for-web">Python for Web</a>
+<ul>
+<li><a href="#flask">Flask</a>
+<ul>
+<li><a href="#folder-structure">Folder structure</a></li>
+</ul></li>
+<li><a href="#setting-up-your-project-directory">Setting up your project
+directory</a></li>
+<li><a href="#creating-routes">Creating routes</a></li>
+<li><a href="#creating-templates">Creating templates</a></li>
+<li><a href="#python-script">Python Script</a></li>
+<li><a href="#navigation">Navigation</a></li>
+<li><a href="#creating-a-layout">Creating a layout</a>
+<ul>
+<li><a href="#serving-static-file">Serving Static File</a></li>
+</ul></li>
+<li><a href="#deployment">Deployment</a>
+<ul>
+<li><a href="#creating-heroku-account">Creating Heroku account</a></li>
+<li><a href="#login-to-heroku">Login to Heroku</a></li>
+<li><a href="#create-requirements-and-procfile">Create requirements and
+Procfile</a></li>
+<li><a href="#pushing-project-to-heroku">Pushing project to
+heroku</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#exercises-day-26">Exercises: Day 26</a></li>
+</ul>
+<h2 id="python-for-web">Python for Web</h2>
+<p>Python is a general purpose programming language and it can be used
+for many places. In this section, we will see how we use Python for the
+web. There are many Python web frame works. Django and Flask are the
+most popular ones. Today, we will see how to use Flask for web
+development.</p>
+<h3 id="flask">Flask</h3>
+<p>Flask is a web development framework written in Python. Flask uses
+Jinja2 template engine. Flask can be also used with other modern front
+libraries such as React.</p>
+<p>If you did not install the virtualenv package yet install it first.
+Virtual environment will allows to isolate project dependencies from the
+local machine dependencies.</p>
+<h4 id="folder-structure">Folder structure</h4>
+<p>After completing all the step, your project file structure should
+look like this:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> Procfile</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> app.py</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> env</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">│  </span> ├── bin</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> requirements.txt</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> static</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│  </span> └── css</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ex">│  </span>     └── main.css</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> templates</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> about.html</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> home.html</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> layout.html</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> post.html</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> result.html</span></code></pre></div>
+<h3 id="setting-up-your-project-directory">Setting up your project
+directory</h3>
+<p>Follow the following steps to get started with Flask.</p>
+<p>Step 1: install virtualenv using the following command.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install virtualenv</span></code></pre></div>
+<p>Step 2:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">asabeneh@Asabeneh:~/Desktop$</span> mkdir python_for_web</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">asabeneh@Asabeneh:~/Desktop$</span> cd python_for_web/</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">asabeneh@Asabeneh:~/Desktop/python_for_web$</span> virtualenv venv</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">asabeneh@Asabeneh:~/Desktop/python_for_web$</span> source venv/bin/activate</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="fu">env</span><span class="kw">)</span> <span class="ex">asabeneh@Asabeneh:~/Desktop/python_for_web$</span> pip freeze</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="fu">env</span><span class="kw">)</span> <span class="ex">asabeneh@Asabeneh:~/Desktop/python_for_web$</span> pip install Flask</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="fu">env</span><span class="kw">)</span> <span class="ex">asabeneh@Asabeneh:~/Desktop/python_for_web$</span> pip freeze</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="va">Click</span><span class="op">=</span>=7.0</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="va">Flask</span><span class="op">=</span>=1.1.1</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="va">itsdangerous</span><span class="op">=</span>=1.1.0</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="va">Jinja2</span><span class="op">=</span>=2.10.3</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="va">MarkupSafe</span><span class="op">=</span>=1.1.1</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="va">Werkzeug</span><span class="op">=</span>=0.16.0</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="fu">env</span><span class="kw">)</span> <span class="ex">asabeneh@Asabeneh:~/Desktop/python_for_web$</span></span></code></pre></div>
+<p>We created a project director named python_for_web. Inside the
+project we created a virtual environment <em>venv</em> which could be
+any name but I prefer to call it <em>venv</em>. Then we activated the
+virtual environment. We used pip freeze to check the installed packages
+in the project directory. The result of pip freeze was empty because a
+package was not installed yet.</p>
+<p>Now, let’s create app.py file in the project directory and write the
+following code. The app.py file will be the main file in the project.
+The following code has flask module, os module.</p>
+<h3 id="creating-routes">Creating routes</h3>
+<p>The home route.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">&#39;/&#39;</span>) <span class="co"># this decorator create the home route</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> home ():</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">&#39;&lt;h1&gt;Welcome&lt;/h1&gt;&#39;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">&#39;/about&#39;</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> about():</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">&#39;&lt;h1&gt;About us&lt;/h1&gt;&#39;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for deployment we use the environ</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to make it work for both production and development</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    port <span class="op">=</span> <span class="bu">int</span>(os.environ.get(<span class="st">&quot;PORT&quot;</span>, <span class="dv">5000</span>))</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    app.run(debug<span class="op">=</span><span class="va">True</span>, host<span class="op">=</span><span class="st">&#39;0.0.0.0&#39;</span>, port<span class="op">=</span>port)</span></code></pre></div>
+<p>To run the flask application, write python app.py in the main flask
+application directory.</p>
+<p>After you run <em>python app.py</em> check local host 5000.</p>
+<p>Let us add additional route. Creating about route</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">&#39;/&#39;</span>) <span class="co"># this decorator create the home route</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> home ():</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">&#39;&lt;h1&gt;Welcome&lt;/h1&gt;&#39;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">&#39;/about&#39;</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> about():</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">&#39;&lt;h1&gt;About us&lt;/h1&gt;&#39;</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for deployment we use the environ</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to make it work for both production and development</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    port <span class="op">=</span> <span class="bu">int</span>(os.environ.get(<span class="st">&quot;PORT&quot;</span>, <span class="dv">5000</span>))</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    app.run(debug<span class="op">=</span><span class="va">True</span>, host<span class="op">=</span><span class="st">&#39;0.0.0.0&#39;</span>, port<span class="op">=</span>port)</span></code></pre></div>
+<p>Now, we added the about route in the above code. How about if we want
+to render an HTML file instead of string? It is possible to render HTML
+file using the function <em>render_templae</em>. Let us create a folder
+called templates and create home.html and about.html in the project
+directory. Let us also import the <em>render_template</em> function from
+flask.</p>
+<h3 id="creating-templates">Creating templates</h3>
+<p>Create the HTML files inside templates folder.</p>
+<p>home.html</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode html"><code class="sourceCode html"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;!DOCTYPE </span>html<span class="dt">&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">html</span> <span class="er">lang</span><span class="ot">=</span><span class="st">&quot;en&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">meta</span> <span class="er">charset</span><span class="ot">=</span><span class="st">&quot;UTF-8&quot;</span> <span class="dt">/&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">meta</span> <span class="er">name</span><span class="ot">=</span><span class="st">&quot;viewport&quot;</span> <span class="er">content</span><span class="ot">=</span><span class="st">&quot;width=device-width, initial-scale=1.0&quot;</span> <span class="dt">/&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">title</span><span class="dt">&gt;</span>Home<span class="dt">&lt;/</span><span class="kw">title</span><span class="dt">&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">h1</span><span class="dt">&gt;</span>Welcome Home<span class="dt">&lt;/</span><span class="kw">h1</span><span class="dt">&gt;</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">html</span><span class="dt">&gt;</span></span></code></pre></div>
+<p>about.html</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode html"><code class="sourceCode html"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;!DOCTYPE </span>html<span class="dt">&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">html</span> <span class="er">lang</span><span class="ot">=</span><span class="st">&quot;en&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">meta</span> <span class="er">charset</span><span class="ot">=</span><span class="st">&quot;UTF-8&quot;</span> <span class="dt">/&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">meta</span> <span class="er">name</span><span class="ot">=</span><span class="st">&quot;viewport&quot;</span> <span class="er">content</span><span class="ot">=</span><span class="st">&quot;width=device-width, initial-scale=1.0&quot;</span> <span class="dt">/&gt;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">title</span><span class="dt">&gt;</span>About<span class="dt">&lt;/</span><span class="kw">title</span><span class="dt">&gt;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">h1</span><span class="dt">&gt;</span>About Us<span class="dt">&lt;/</span><span class="kw">h1</span><span class="dt">&gt;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">html</span><span class="dt">&gt;</span></span></code></pre></div>
+<h3 id="python-script">Python Script</h3>
+<p>app.py</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">&#39;/&#39;</span>) <span class="co"># this decorator create the home route</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> home ():</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">&#39;home.html&#39;</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">&#39;/about&#39;</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> about():</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">&#39;about.html&#39;</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for deployment we use the environ</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to make it work for both production and development</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    port <span class="op">=</span> <span class="bu">int</span>(os.environ.get(<span class="st">&quot;PORT&quot;</span>, <span class="dv">5000</span>))</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    app.run(debug<span class="op">=</span><span class="va">True</span>, host<span class="op">=</span><span class="st">&#39;0.0.0.0&#39;</span>, port<span class="op">=</span>port)</span></code></pre></div>
+<p>As you can see to go to different pages or to navigate we need a
+navigation. Let’s add a link to each page or let’s create a layout which
+we use to every page.</p>
+<h3 id="navigation">Navigation</h3>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode html"><code class="sourceCode html"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;&lt;</span><span class="kw">a</span> <span class="er">href</span><span class="ot">=</span><span class="st">&quot;/&quot;</span><span class="dt">&gt;</span>Home<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;&lt;</span><span class="kw">a</span> <span class="er">href</span><span class="ot">=</span><span class="st">&quot;/about&quot;</span><span class="dt">&gt;</span>About<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">ul</span><span class="dt">&gt;</span></span></code></pre></div>
+<p>Now, we can navigate between the pages using the above link. Let us
+create additional page which handle form data. You can call it any name,
+I like to call it post.html.</p>
+<p>We can inject data to the HTML files using Jinja2 template
+engine.</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template, request, redirect, url_for</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">&#39;/&#39;</span>) <span class="co"># this decorator create the home route</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> home ():</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    techs <span class="op">=</span> [<span class="st">&#39;HTML&#39;</span>, <span class="st">&#39;CSS&#39;</span>, <span class="st">&#39;Flask&#39;</span>, <span class="st">&#39;Python&#39;</span>]</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    name <span class="op">=</span> <span class="st">&#39;30 Days Of Python Programming&#39;</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">&#39;home.html&#39;</span>, techs<span class="op">=</span>techs, name <span class="op">=</span> name, title <span class="op">=</span> <span class="st">&#39;Home&#39;</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">&#39;/about&#39;</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> about():</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    name <span class="op">=</span> <span class="st">&#39;30 Days Of Python Programming&#39;</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">&#39;about.html&#39;</span>, name <span class="op">=</span> name, title <span class="op">=</span> <span class="st">&#39;About Us&#39;</span>)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">&#39;/post&#39;</span>)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> post():</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    name <span class="op">=</span> <span class="st">&#39;Text Analyzer&#39;</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">&#39;post.html&#39;</span>, name <span class="op">=</span> name, title <span class="op">=</span> name)</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for deployment</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to make it work for both production and development</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    port <span class="op">=</span> <span class="bu">int</span>(os.environ.get(<span class="st">&quot;PORT&quot;</span>, <span class="dv">5000</span>))</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    app.run(debug<span class="op">=</span><span class="va">True</span>, host<span class="op">=</span><span class="st">&#39;0.0.0.0&#39;</span>, port<span class="op">=</span>port)</span></code></pre></div>
+<p>Let’s see the templates too:</p>
+<p>home.html</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode html"><code class="sourceCode html"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;!DOCTYPE </span>html<span class="dt">&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">html</span> <span class="er">lang</span><span class="ot">=</span><span class="st">&quot;en&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">meta</span> <span class="er">charset</span><span class="ot">=</span><span class="st">&quot;UTF-8&quot;</span> <span class="dt">/&gt;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">meta</span> <span class="er">name</span><span class="ot">=</span><span class="st">&quot;viewport&quot;</span> <span class="er">content</span><span class="ot">=</span><span class="st">&quot;width=device-width, initial-scale=1.0&quot;</span> <span class="dt">/&gt;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">title</span><span class="dt">&gt;</span>Home<span class="dt">&lt;/</span><span class="kw">title</span><span class="dt">&gt;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;&lt;</span><span class="kw">a</span> <span class="er">href</span><span class="ot">=</span><span class="st">&quot;/&quot;</span><span class="dt">&gt;</span>Home<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;&lt;</span><span class="kw">a</span> <span class="er">href</span><span class="ot">=</span><span class="st">&quot;/about&quot;</span><span class="dt">&gt;</span>About<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">h1</span><span class="dt">&gt;</span>Welcome to {{name}}<span class="dt">&lt;/</span><span class="kw">h1</span><span class="dt">&gt;</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>     <span class="dt">&lt;</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    {% for tech in techs %}</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;</span>{{tech}}<span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    {% endfor %}</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">html</span><span class="dt">&gt;</span></span></code></pre></div>
+<p>about.html</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode html"><code class="sourceCode html"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;!DOCTYPE </span>html<span class="dt">&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">html</span> <span class="er">lang</span><span class="ot">=</span><span class="st">&quot;en&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">meta</span> <span class="er">charset</span><span class="ot">=</span><span class="st">&quot;UTF-8&quot;</span> <span class="dt">/&gt;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">meta</span> <span class="er">name</span><span class="ot">=</span><span class="st">&quot;viewport&quot;</span> <span class="er">content</span><span class="ot">=</span><span class="st">&quot;width=device-width, initial-scale=1.0&quot;</span> <span class="dt">/&gt;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">title</span><span class="dt">&gt;</span>About Us<span class="dt">&lt;/</span><span class="kw">title</span><span class="dt">&gt;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;&lt;</span><span class="kw">a</span> <span class="er">href</span><span class="ot">=</span><span class="st">&quot;/&quot;</span><span class="dt">&gt;</span>Home<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">li</span><span class="dt">&gt;&lt;</span><span class="kw">a</span> <span class="er">href</span><span class="ot">=</span><span class="st">&quot;/about&quot;</span><span class="dt">&gt;</span>About<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">h1</span><span class="dt">&gt;</span>About Us<span class="dt">&lt;/</span><span class="kw">h1</span><span class="dt">&gt;</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">h2</span><span class="dt">&gt;</span>{{name}}<span class="dt">&lt;/</span><span class="kw">h2</span><span class="dt">&gt;</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">html</span><span class="dt">&gt;</span></span></code></pre></div>
+<h3 id="creating-a-layout">Creating a layout</h3>
+<p>In the template files, there are lots of repeated codes, we can write
+a layout and we can remove the repetition. Let’s create layout.html
+inside the templates folder. After we create the layout we will import
+to every file.</p>
+<h4 id="serving-static-file">Serving Static File</h4>
+<p>Create a static folder in your project directory. Inside the static
+folder create CSS or styles folder and create a CSS stylesheet. We use
+the <em>url_for</em> module to serve the static file.</p>
+<p>layout.html</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode html"><code class="sourceCode html"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;!DOCTYPE </span>html<span class="dt">&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">html</span> <span class="er">lang</span><span class="ot">=</span><span class="st">&quot;en&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">meta</span> <span class="er">charset</span><span class="ot">=</span><span class="st">&quot;UTF-8&quot;</span> <span class="dt">/&gt;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">meta</span> <span class="er">name</span><span class="ot">=</span><span class="st">&quot;viewport&quot;</span> <span class="er">content</span><span class="ot">=</span><span class="st">&quot;width=device-width, initial-scale=1.0&quot;</span> <span class="dt">/&gt;</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">link</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="ot">      href=</span><span class="st">&quot;https://fonts.googleapis.com/css?family=Lato:300,400|Nunito:300,400|Raleway:300,400,500</span><span class="er">&amp;</span><span class="st">display=swap&quot;</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="ot">      rel=</span><span class="st">&quot;stylesheet&quot;</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">/&gt;</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">link</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="ot">      rel=</span><span class="st">&quot;stylesheet&quot;</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="ot">      href=</span><span class="st">&quot;{{ url_for(&#39;static&#39;, filename=&#39;css/main.css&#39;) }}&quot;</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">/&gt;</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    {% if title %}</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">title</span><span class="dt">&gt;</span>30 Days of Python - {{ title}}<span class="dt">&lt;/</span><span class="kw">title</span><span class="dt">&gt;</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    {% else %}</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">title</span><span class="dt">&gt;</span>30 Days of Python<span class="dt">&lt;/</span><span class="kw">title</span><span class="dt">&gt;</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    {% endif %}</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">header</span><span class="dt">&gt;</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">div</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;menu-container&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&lt;</span><span class="kw">a</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;brand-name nav-link&quot;</span> <span class="er">href</span><span class="ot">=</span><span class="st">&quot;/&quot;</span><span class="dt">&gt;</span>30DaysOfPython<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;</span><span class="kw">ul</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;nav-lists&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&lt;</span><span class="kw">li</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;nav-list&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;</span><span class="kw">a</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;nav-link active&quot;</span> <span class="er">href</span><span class="ot">=</span><span class="st">&quot;{{ url_for(&#39;home&#39;) }}&quot;</span><span class="dt">&gt;</span>Home<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&lt;</span><span class="kw">li</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;nav-list&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;</span><span class="kw">a</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;nav-link active&quot;</span> <span class="er">href</span><span class="ot">=</span><span class="st">&quot;{{ url_for(&#39;about&#39;) }}&quot;</span><span class="dt">&gt;</span>About<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&lt;</span><span class="kw">li</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;nav-list&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&lt;</span><span class="kw">a</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;nav-link active&quot;</span> <span class="er">href</span><span class="ot">=</span><span class="st">&quot;{{ url_for(&#39;post&#39;) }}&quot;</span></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>              <span class="dt">&gt;</span>Text Analyzer<span class="dt">&lt;/</span><span class="kw">a</span></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&gt;</span></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>          <span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&lt;/</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">header</span><span class="dt">&gt;</span></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">main</span><span class="dt">&gt;</span></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>      {% block content %} {% endblock %}</span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">main</span><span class="dt">&gt;</span></span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">html</span><span class="dt">&gt;</span></span></code></pre></div>
+<p>Now, lets remove all the repeated code in the other template files
+and import the layout.html. The href is using <em>url_for</em> function
+with the name of the route function to connect each navigation
+route.</p>
+<p>home.html</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode html"><code class="sourceCode html"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>{% extends &#39;layout.html&#39; %} {% block content %}</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;container&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">h1</span><span class="dt">&gt;</span>Welcome to {{name}}<span class="dt">&lt;/</span><span class="kw">h1</span><span class="dt">&gt;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    This application clean texts and analyse the number of word, characters and</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    most frequent words in the text. Check it out by click text analyzer at the</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    menu. You need the following technologies to build this web application:</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">ul</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;tech-lists&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    {% for tech in techs %}</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">li</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;tech&quot;</span><span class="dt">&gt;</span>{{tech}}<span class="dt">&lt;/</span><span class="kw">li</span><span class="dt">&gt;</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    {% endfor %}</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">ul</span><span class="dt">&gt;</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>{% endblock %}</span></code></pre></div>
+<p>about.html</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode html"><code class="sourceCode html"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>{% extends &#39;layout.html&#39; %} {% block content %}</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;container&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">h1</span><span class="dt">&gt;</span>About {{name}}<span class="dt">&lt;/</span><span class="kw">h1</span><span class="dt">&gt;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    This is a 30 days of python programming challenge. If you have been coding</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    this far, you are awesome. Congratulations for the job well done!</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>{% endblock %}</span></code></pre></div>
+<p>post.html</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode html"><code class="sourceCode html"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>{% extends &#39;layout.html&#39; %} {% block content %}</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;container&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">h1</span><span class="dt">&gt;</span>Text Analyzer<span class="dt">&lt;/</span><span class="kw">h1</span><span class="dt">&gt;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">form</span> <span class="er">action</span><span class="ot">=</span><span class="st">&quot;https://thirtydaysofpython-v1.herokuapp.com/post&quot;</span> <span class="er">method</span><span class="ot">=</span><span class="st">&quot;POST&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">textarea</span> <span class="er">rows</span><span class="ot">=</span><span class="st">&quot;25&quot;</span> <span class="er">name</span><span class="ot">=</span><span class="st">&quot;content&quot;</span> <span class="er">autofocus</span><span class="dt">&gt;&lt;/</span><span class="kw">textarea</span><span class="dt">&gt;</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">input</span> <span class="er">type</span><span class="ot">=</span><span class="st">&quot;submit&quot;</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;btn&quot;</span> <span class="er">value</span><span class="ot">=</span><span class="st">&quot;Process Text&quot;</span> <span class="dt">/&gt;</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>{% endblock %}</span></code></pre></div>
+<p>Request methods, there are different request methods(GET, POST, PUT,
+DELETE) are the common request methods which allow us to do CRUD(Create,
+Read, Update, Delete) operation.</p>
+<p>In the post, route we will use GET and POST method alternative
+depending on the type of request, check how it looks in the code below.
+The request method is a function to handle request methods and also to
+access form data. app.py</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode py"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s import the flask</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template, request, redirect, url_for</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os <span class="co"># importing operating system module</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># to stop caching static file</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>app.config[<span class="st">&#39;SEND_FILE_MAX_AGE_DEFAULT&#39;</span>] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">&#39;/&#39;</span>) <span class="co"># this decorator create the home route</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> home ():</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    techs <span class="op">=</span> [<span class="st">&#39;HTML&#39;</span>, <span class="st">&#39;CSS&#39;</span>, <span class="st">&#39;Flask&#39;</span>, <span class="st">&#39;Python&#39;</span>]</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    name <span class="op">=</span> <span class="st">&#39;30 Days Of Python Programming&#39;</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">&#39;home.html&#39;</span>, techs<span class="op">=</span>techs, name <span class="op">=</span> name, title <span class="op">=</span> <span class="st">&#39;Home&#39;</span>)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">&#39;/about&#39;</span>)</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> about():</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    name <span class="op">=</span> <span class="st">&#39;30 Days Of Python Programming&#39;</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">&#39;about.html&#39;</span>, name <span class="op">=</span> name, title <span class="op">=</span> <span class="st">&#39;About Us&#39;</span>)</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">&#39;/result&#39;</span>)</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> result():</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">&#39;result.html&#39;</span>)</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">&#39;/post&#39;</span>, methods<span class="op">=</span> [<span class="st">&#39;GET&#39;</span>,<span class="st">&#39;POST&#39;</span>])</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> post():</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>    name <span class="op">=</span> <span class="st">&#39;Text Analyzer&#39;</span></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> request.method <span class="op">==</span> <span class="st">&#39;GET&#39;</span>:</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>         <span class="cf">return</span> render_template(<span class="st">&#39;post.html&#39;</span>, name <span class="op">=</span> name, title <span class="op">=</span> name)</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> request.method <span class="op">==</span><span class="st">&#39;POST&#39;</span>:</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>        content <span class="op">=</span> request.form[<span class="st">&#39;content&#39;</span>]</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(content)</span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> redirect(url_for(<span class="st">&#39;result&#39;</span>))</span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for deployment</span></span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to make it work for both production and development</span></span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>    port <span class="op">=</span> <span class="bu">int</span>(os.environ.get(<span class="st">&quot;PORT&quot;</span>, <span class="dv">5000</span>))</span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>    app.run(debug<span class="op">=</span><span class="va">True</span>, host<span class="op">=</span><span class="st">&#39;0.0.0.0&#39;</span>, port<span class="op">=</span>port)</span></code></pre></div>
+<p>So far, we have seen how to use template and how to inject data to
+template, how to a common layout. Now, lets handle static file. Create a
+folder called static in the project director and create a folder called
+css. Inside css folder create main.css. Your main. css file will be
+linked to the layout.html.</p>
+<p>You don’t have to write the css file, copy and use it. Let’s move on
+to deployment.</p>
+<h3 id="deployment">Deployment</h3>
+<h4 id="creating-heroku-account">Creating Heroku account</h4>
+<p>Heroku provides a free deployment service for both front end and
+fullstack applications. Create an account on <a
+href="https://www.heroku.com/">heroku</a> and install the heroku <a
+href="https://devcenter.heroku.com/articles/heroku-cli">CLI</a> for you
+machine. After installing heroku write the following command</p>
+<h4 id="login-to-heroku">Login to Heroku</h4>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">asabeneh@Asabeneh:~$</span> heroku login</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="ex">heroku:</span> Press any key to open up the browser to login or q to exit:</span></code></pre></div>
+<p>Let’s see the result by clicking any key from the keyboard. When you
+press any key from you keyboard it will open the heroku login page and
+click the login page. Then you will local machine will be connected to
+the remote heroku server. If you are connected to remote server, you
+will see this.</p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">asabeneh@Asabeneh:~$</span> heroku login</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="ex">heroku:</span> Press any key to open up the browser to login or q to exit:</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Opening</span> browser to https://cli-auth.heroku.com/auth/browser/be12987c-583a-4458-a2c2-ba2ce7f41610</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Logging</span> in... done</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Logged</span> in as asabeneh@gmail.com</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="ex">asabeneh@Asabeneh:~$</span></span></code></pre></div>
+<h4 id="create-requirements-and-procfile">Create requirements and
+Procfile</h4>
+<p>Before we push our code to remote server, we need requirements</p>
+<ul>
+<li>requirements.txt</li>
+<li>Procfile</li>
+</ul>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="fu">env</span><span class="kw">)</span> <span class="ex">asabeneh@Asabeneh:~/Desktop/python_for_web$</span> pip freeze</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="va">Click</span><span class="op">=</span>=7.0</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="va">Flask</span><span class="op">=</span>=1.1.1</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="va">itsdangerous</span><span class="op">=</span>=1.1.0</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="va">Jinja2</span><span class="op">=</span>=2.10.3</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="va">MarkupSafe</span><span class="op">=</span>=1.1.1</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="va">Werkzeug</span><span class="op">=</span>=0.16.0</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="fu">env</span><span class="kw">)</span> <span class="ex">asabeneh@Asabeneh:~/Desktop/python_for_web$</span> touch requirements.txt</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="fu">env</span><span class="kw">)</span> <span class="ex">asabeneh@Asabeneh:~/Desktop/python_for_web$</span> pip freeze <span class="op">&gt;</span> requirements.txt</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="fu">env</span><span class="kw">)</span> <span class="ex">asabeneh@Asabeneh:~/Desktop/python_for_web$</span> cat requirements.txt</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="va">Click</span><span class="op">=</span>=7.0</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="va">Flask</span><span class="op">=</span>=1.1.1</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="va">itsdangerous</span><span class="op">=</span>=1.1.0</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="va">Jinja2</span><span class="op">=</span>=2.10.3</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="va">MarkupSafe</span><span class="op">=</span>=1.1.1</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="va">Werkzeug</span><span class="op">=</span>=0.16.0</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="fu">env</span><span class="kw">)</span> <span class="ex">asabeneh@Asabeneh:~/Desktop/python_for_web$</span> touch Procfile</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="fu">env</span><span class="kw">)</span> <span class="ex">asabeneh@Asabeneh:~/Desktop/python_for_web$</span> ls</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="ex">Procfile</span>          env/              static/</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="ex">app.py</span>            requirements.txt  templates/</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="fu">env</span><span class="kw">)</span> <span class="ex">asabeneh@Asabeneh:~/Desktop/python_for_web$</span></span></code></pre></div>
+<p>The Procfile will have the command which run the application in the
+web server in our case on Heroku.</p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode sh"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">web:</span> python app.py</span></code></pre></div>
+<h4 id="pushing-project-to-heroku">Pushing project to heroku</h4>
+<p>Now, it is ready to be deployed. Steps to deploy the application on
+heroku</p>
+<ol type="1">
+<li>git init</li>
+<li>git add .</li>
+<li>git commit -m “commit message”</li>
+<li>heroku create ‘name of the app as one word’</li>
+<li>git push heroku master</li>
+<li>heroku open(to launch the deployed application)</li>
+</ol>
+<p>After this step you will get an application like <a
+href="http://thirdaysofpython-practice.herokuapp.com/">this</a></p>
+<h2 id="exercises-day-26">Exercises: Day 26</h2>
+<ol type="1">
+<li>You will build <a
+href="https://thirtydaysofpython-v1-final.herokuapp.com/">this
+application</a>. Only the text analyser part is left</li>
+</ol>
